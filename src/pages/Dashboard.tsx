@@ -1,3 +1,5 @@
+import ProgressRing from "@/components/ProgressRing"
+
 export default function Dashboard() {
 	return (
 		<div>
@@ -5,7 +7,9 @@ export default function Dashboard() {
 			<p>Welcome back 👋</p>
 
 			<div className="grid gap-3 mt-4">
-				<div className="p-4 border rounded-lg">Progress Ring Placeholder</div>
+				<div className="p-4 border rounded-lg flex justify-center">
+					<ProgressRing progress={65} />
+				</div>
 				<div className="p-4 border rounded-lg">Streak Placeholder</div>
 				<div className="p-4 border rounded-lg">Stats Placeholder</div>
 				<div className="p-4 border rounded-lg">AI Insight Placeholder</div>
