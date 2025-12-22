@@ -1,13 +1,23 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* CSS Variables */
+/* Theme Variables */
+@theme {
+	--color-background: hsl(var(--background));
+	--color-foreground: hsl(var(--foreground));
+	--color-primary: hsl(var(--primary));
+	--color-success: hsl(var(--success));
+	--color-warning: hsl(var(--warning));
 
+	--font-poppins: var(--font-poppins);
+}
+
+/* CSS Variables */
 :root {
 	--primary: 239 84% 67%;
 	--success: 142 76% 36%;
 	--warning: 38 92% 50%;
-  --font-poppins: "Poppins", sans-serif;
+	--font-poppins: "Poppins", sans-serif;
 	--background: 220 14% 98%;
 	--foreground: 222 47% 11%;
 }
@@ -19,7 +29,7 @@
 
 /* Apply theme colors */
 body {
-  font-family: var(--font-poppins);
+	font-family: var(--font-poppins);
 	background-color: hsl(var(--background));
 	color: hsl(var(--foreground));
 	transition: background-color 0.3s ease, color 0.3s ease;
