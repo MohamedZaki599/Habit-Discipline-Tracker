@@ -1,7 +1,7 @@
 import ProgressRing from "@/components/ProgressRing"
 import StreakBadge from "@/components/StreakBadge"
 import StatCard from "@/components/StatCard"
-
+import InsightCard from "@/components/InsightCard"
 
 export default function Dashboard() {
 	return (
@@ -21,7 +21,10 @@ export default function Dashboard() {
 					<StatCard label="Pending" value={3} color="primary" />
 					<StatCard label="Missed" value={1} color="warning" />
 				</div>
-				<div className="p-4 border rounded-lg">AI Insight Placeholder</div>
+				<InsightCard
+					message="You're doing great! You completed most of your habits today.
+					Try to stay consistent tomorrow to extend your streak 🔥"
+				/>
 			</div>
 		</div>
 	)
