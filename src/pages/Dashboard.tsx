@@ -5,7 +5,7 @@ import InsightCard from "@/components/InsightCard"
 import { useHabits } from "@/context/HabitContext"
 
 export default function Dashboard() {
-	const { habits } = useHabits()
+	const { habits, logs } = useHabits()
 
 	const activeHabits = habits.filter((h) => h.isActive).length
 	const totalHabits = habits.length
@@ -15,7 +15,9 @@ export default function Dashboard() {
 
 	const inactiveHabits = habits.filter((h) => !h.isActive).length
 
-	const completedToday = 0 // placeholder until daily log system
+	const today = new Date().toISOString().split("T")[0]
+
+	const completedToday = logs.filter((log) => log.date === today).length
 
 	return (
 		<div>
@@ -35,6 +37,7 @@ export default function Dashboard() {
 						value={completedToday}
 						color="success"
 					/>
+
 					<StatCard
 						label="Active Habits"
 						value={activeHabits}

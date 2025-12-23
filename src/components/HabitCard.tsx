@@ -6,7 +6,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 export default function HabitCard({ habit }: { habit: Habit }) {
-	const { removeHabit, toggleHabitStatus } = useHabits()
+	const { removeHabit, toggleHabitStatus, markHabitCompletedToday, logs } =
+		useHabits()
+
+	const today = new Date().toISOString().split("T")[0]
+
+	const completedToday = logs.some(
+		(log) => log.habitId === habit.id && log.date === today
+	)
 
 	return (
 		<motion.div
@@ -59,6 +66,19 @@ export default function HabitCard({ habit }: { habit: Habit }) {
 
 				{/* Actions */}
 				<div className="flex gap-2">
+					{!completedToday && habit.isActive && (
+						<Button
+							variant="default"
+							onClick={() => markHabitCompletedToday(habit.id)}
+						>
+							Mark Done
+						</Button>
+					)}
+
+					{completedToday && (
+						<span className="text-green-500 text-sm">Completed Today ✔️</span>
+					)}
+
 					<Button variant="outline" onClick={() => toggleHabitStatus(habit.id)}>
 						Toggle
 					</Button>
