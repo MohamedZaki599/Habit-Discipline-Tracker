@@ -124,8 +124,10 @@ useEffect(() => {
 			const lastDate = new Date(existing.lastCompleted)
 			const todayDate = new Date(today)
 
-			const diffDays =
+			const diffDays = Math.floor(
 				(todayDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+			)
+
 
 			let newCurrent = existing.currentStreak
 
