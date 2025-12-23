@@ -2,12 +2,13 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import { createContext, useContext, useEffect, useState } from "react"
-import type { DailyLog, Habit } from "@/types/habit"
+import type { DailyLog, Habit, HabitStreak } from "@/types/habit"
 import { v4 as uuid } from "uuid"
 
 type HabitContextType = {
 	habits: Habit[]
 	logs: DailyLog[]
+	streaks: HabitStreak[]
 	addHabit: (habit: Omit<Habit, "id" | "createdAt">) => void
 	removeHabit: (id: string) => void
 	toggleHabitStatus: (id: string) => void
@@ -17,6 +18,7 @@ type HabitContextType = {
 const HabitContext = createContext<HabitContextType>({
 	habits: [],
 	logs: [],
+	streaks: [],
 	addHabit: () => {},
 	removeHabit: () => {},
 	toggleHabitStatus: () => {},
@@ -36,6 +38,13 @@ export const HabitProvider = ({ children }: { children: React.ReactNode }) => {
 		return stored ? JSON.parse(stored) : []
 	})
 
+	// ========== STREAK STATE ==========
+	const [streaks, setStreaks] = useState<HabitStreak[]>(() => {
+		const stored = localStorage.getItem("streaks")
+		return stored ? JSON.parse(stored) : []
+	})
+
+
 	// save habits
 	useEffect(() => {
 		localStorage.setItem("habits", JSON.stringify(habits))
@@ -45,6 +54,12 @@ export const HabitProvider = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		localStorage.setItem("logs", JSON.stringify(logs))
 	}, [logs])
+
+	// save streaks
+useEffect(() => {
+	localStorage.setItem("streaks", JSON.stringify(streaks))
+}, [streaks])
+
 
 	// ========== ADD HABIT ==========
 	const addHabit = (habit: Omit<Habit, "id" | "createdAt">) => {
@@ -78,6 +93,7 @@ export const HabitProvider = ({ children }: { children: React.ReactNode }) => {
 
 		if (alreadyLogged) return
 
+		// ========== LOG ==========
 		setLogs((prev) => [
 			...prev,
 			{
@@ -87,13 +103,63 @@ export const HabitProvider = ({ children }: { children: React.ReactNode }) => {
 				status: "completed",
 			},
 		])
+
+		// ========== UPDATE STREAK ==========
+		setStreaks((prev) => {
+			const existing = prev.find((s) => s.habitId === habitId)
+
+			if (!existing) {
+				// first time
+				return [
+					...prev,
+					{
+						habitId,
+						currentStreak: 1,
+						longestStreak: 1,
+						lastCompleted: today,
+					},
+				]
+			}
+
+			const lastDate = new Date(existing.lastCompleted)
+			const todayDate = new Date(today)
+
+			const diffDays =
+				(todayDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+
+			let newCurrent = existing.currentStreak
+
+			if (diffDays === 1) {
+				// continuous 🔥
+				newCurrent = existing.currentStreak + 1
+			} else if (diffDays > 1) {
+				// interrupted starts again
+				newCurrent = 1
+			} else {
+				// same day nothing
+				return prev
+			}
+
+			return prev.map((s) =>
+				s.habitId === habitId
+					? {
+							...s,
+							currentStreak: newCurrent,
+							longestStreak: Math.max(existing.longestStreak, newCurrent),
+							lastCompleted: today,
+					  }
+					: s
+			)
+		})
 	}
+
 
 	return (
 		<HabitContext.Provider
 			value={{
 				habits,
 				logs,
+				streaks,
 				addHabit,
 				removeHabit,
 				toggleHabitStatus,

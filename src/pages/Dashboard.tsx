@@ -5,7 +5,7 @@ import InsightCard from "@/components/InsightCard"
 import { useHabits } from "@/context/HabitContext"
 
 export default function Dashboard() {
-	const { habits, logs } = useHabits()
+	const { habits, logs, streaks } = useHabits()
 
 	const activeHabits = habits.filter((h) => h.isActive).length
 	const totalHabits = habits.length
@@ -19,6 +19,11 @@ export default function Dashboard() {
 
 	const completedToday = logs.filter((log) => log.date === today).length
 
+	const bestStreak =
+		streaks.length === 0 ? 0 : Math.max(...streaks.map((s) => s.currentStreak))
+
+
+
 	return (
 		<div>
 			<h2 className="text-xl font-bold mb-3">Dashboard</h2>
@@ -29,7 +34,7 @@ export default function Dashboard() {
 					<ProgressRing progress={progress} />
 				</div>
 				<div className="p-4 border rounded-lg flex justify-center">
-					<StreakBadge streak={7} />
+					<StreakBadge streak={bestStreak} />
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 					<StatCard
