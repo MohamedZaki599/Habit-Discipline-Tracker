@@ -6,6 +6,9 @@ import {
 	YAxis,
 	Tooltip,
 	ResponsiveContainer,
+	PieChart,
+	Pie,
+	Cell,
 } from "recharts"
 
 export default function Analytics() {
@@ -35,6 +38,14 @@ export default function Analytics() {
 	})
 
 	const totalWeekCompleted = weeklyData.reduce((a, b) => a + b.completed, 0)
+
+	const remaining = 7 - totalWeekCompleted
+
+	const pieData = [
+		{ name: "Completed", value: totalWeekCompleted },
+		{ name: "Missed", value: remaining },
+	]
+
 
 	const bestDay =
 		weeklyData.length === 0
@@ -79,6 +90,31 @@ export default function Analytics() {
 			</div>
 
 			{/* Insight Cards */}
+			<div
+				className="rounded-2xl border bg-[hsl(var(--card))]
+ shadow-sm p-6"
+			>
+				<h4 className="font-semibold mb-4">Completed vs Missed</h4>
+
+				<div className="h-64 flex items-center justify-center">
+					<PieChart width={300} height={300}>
+						<Pie
+							data={pieData}
+							cx="50%"
+							cy="50%"
+							outerRadius={100}
+							dataKey="value"
+							label
+						>
+							<Cell fill="#4ade80" />
+							<Cell fill="#f87171" />
+						</Pie>
+					</PieChart>
+				</div>
+			</div>
+
+			{/* Stat Cards */}
+
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 				<div
 					className="rounded-2xl border bg-[hsl(var(--card))]
