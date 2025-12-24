@@ -1,4 +1,5 @@
 import { useHabits } from "@/context/HabitContext"
+import Heatmap from "@/components/Heatmap"
 import {
 	BarChart,
 	Bar,
@@ -112,6 +113,10 @@ export default function Analytics() {
 					</PieChart>
 				</div>
 			</div>
+
+			{/* Heatmap */}
+			<Heatmap />
+
 
 			{/* Stat Cards */}
 
