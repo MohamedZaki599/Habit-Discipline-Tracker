@@ -1,63 +1,57 @@
 import ProgressRing from "@/components/ProgressRing"
-import StreakBadge from "@/components/StreakBadge"
 import StatCard from "@/components/StatCard"
-import InsightCard from "@/components/InsightCard"
+import StreakBadge from "@/components/StreakBadge"
 import { useHabits } from "@/context/HabitContext"
 
 export default function Dashboard() {
 	const { habits, logs, streaks } = useHabits()
 
 	const activeHabits = habits.filter((h) => h.isActive).length
+	const inactiveHabits = habits.filter((h) => !h.isActive).length
 	const totalHabits = habits.length
+
+	const today = new Date().toISOString().split("T")[0]
+	const completedToday = logs.filter((l) => l.date === today).length
 
 	const progress =
 		totalHabits === 0 ? 0 : Math.round((activeHabits / totalHabits) * 100)
 
-	const inactiveHabits = habits.filter((h) => !h.isActive).length
-
-	const today = new Date().toISOString().split("T")[0]
-
-	const completedToday = logs.filter((log) => log.date === today).length
-
 	const bestStreak =
 		streaks.length === 0 ? 0 : Math.max(...streaks.map((s) => s.currentStreak))
 
-
-
 	return (
-		<div>
-			<h2 className="text-xl font-bold mb-3">Dashboard</h2>
-			<p>Welcome back 👋</p>
+		<div className="space-y-6">
+			<h2 className="text-2xl font-bold">Dashboard</h2>
 
-			<div className="grid gap-3 mt-4">
-				<div className="p-4 border rounded-lg flex justify-center">
-					<ProgressRing progress={progress} />
+			{/* Top Section */}
+			<div className="flex flex-wrap justify-between items-center gap-3">
+				<div>
+					<h3 className="text-lg font-semibold">Welcome back 👋</h3>
+					<p className="text-muted-foreground text-sm">
+						Keep building strong habits. You’re doing great!
+					</p>
 				</div>
-				<div className="p-4 border rounded-lg flex justify-center">
-					<StreakBadge streak={bestStreak} />
-				</div>
-				<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-					<StatCard
-						label="Completed Today"
-						value={completedToday}
-						color="success"
-					/>
 
-					<StatCard
-						label="Active Habits"
-						value={activeHabits}
-						color="primary"
-					/>
-					<StatCard
-						label="Inactive Habits"
-						value={inactiveHabits}
-						color="warning"
-					/>
-				</div>
-				<InsightCard
-					message="You're doing great! You completed most of your habits today.
-					Try to stay consistent tomorrow to extend your streak 🔥"
-				/>
+				<StreakBadge streak={bestStreak} />
+			</div>
+
+			{/* Progress Section */}
+			<div
+				className="rounded-2xl border bg-[hsl(var(--card))]
+       shadow-sm p-6 flex flex-col items-center gap-4"
+			>
+				<h4 className="font-semibold text-lg">Overall Progress</h4>
+
+				<ProgressRing progress={progress} />
+
+				<p className="text-muted-foreground text-sm">Active Habits Progress</p>
+			</div>
+
+			{/* Stat Cards */}
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+				<StatCard label="Completed Today" value={completedToday} />
+				<StatCard label="Active Habits" value={activeHabits} />
+				<StatCard label="Inactive Habits" value={inactiveHabits} />
 			</div>
 		</div>
 	)

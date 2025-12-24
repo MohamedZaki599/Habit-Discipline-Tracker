@@ -1,40 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion"
 
-type StatCardProps = {
+type Props = {
 	label: string
 	value: number
-	color: "primary" | "success" | "warning"
+	icon?: any
 }
 
-export default function StatCard({ label, value, color }: StatCardProps) {
-	const colorMap: Record<typeof color, string> = {
-		primary: "var(--primary)",
-		success: "var(--success)",
-		warning: "var(--warning)",
-	}
-
+export default function StatCard({ label, value, icon: Icon }: Props) {
 	return (
 		<motion.div
-			initial={{ y: 15, opacity: 0 }}
-			animate={{ y: 0, opacity: 1 }}
-			transition={{ duration: 0.4 }}
-			className="rounded-xl border bg-[hsl(var(--card))] p-4 shadow-sm flex flex-col gap-2"
+			whileHover={{ scale: 1.02 }}
+			className="rounded-2xl border bg-[hsl(var(--card))]
+      shadow-sm p-5 flex items-center justify-between gap-4"
 		>
-			<span className="text-sm opacity-70">{label}</span>
-
-			<div className="flex items-center gap-2">
-				<span
-					className="inline-block w-3 h-3 rounded-full"
-					style={{ background: `hsl(${colorMap[color]})` }}
-				/>
-
-				<p
-					className="text-3xl font-bold"
-					style={{ color: `hsl(${colorMap[color]})` }}
-				>
-					{value}
-				</p>
+			<div>
+				<h4 className="text-sm text-muted-foreground">{label}</h4>
+				<p className="text-2xl font-bold">{value}</p>
 			</div>
+
+			{Icon && (
+				<div className="p-3 rounded-full bg-muted">
+					<Icon className="size-6" />
+				</div>
+			)}
 		</motion.div>
 	)
 }
