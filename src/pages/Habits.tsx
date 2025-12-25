@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useHabits } from "@/context/HabitContext"
@@ -145,28 +144,27 @@ export default function HabitsPage() {
       ----------------------------------- */}
 			<div className="flex gap-2 flex-wrap">
 				<PriorityButton
-					label="All"
-					value="all"
-					active={priorityFilter === "all"}
-					onClick={() => setPriorityFilter("all")}
-				/>
-				<PriorityButton
 					label="High"
-					value="high"
 					active={priorityFilter === "high"}
 					onClick={() => setPriorityFilter("high")}
 				/>
+
 				<PriorityButton
-					label="Medium"
-					value="medium"
-					active={priorityFilter === "medium"}
-					onClick={() => setPriorityFilter("medium")}
+					label="High"
+					active={priorityFilter === "high"}
+					onClick={() => setPriorityFilter("high")}
 				/>
+
 				<PriorityButton
-					label="Low"
-					value="low"
-					active={priorityFilter === "low"}
-					onClick={() => setPriorityFilter("low")}
+					label="High"
+					active={priorityFilter === "high"}
+					onClick={() => setPriorityFilter("high")}
+				/>
+
+				<PriorityButton
+					label="High"
+					active={priorityFilter === "high"}
+					onClick={() => setPriorityFilter("high")}
 				/>
 			</div>
 
@@ -202,17 +200,13 @@ export default function HabitsPage() {
 	)
 }
 
-/* -----------------------------------
-   Priority Filter Button Component
------------------------------------ */
+// ========== PRIORITY BUTTON ==========
 function PriorityButton({
 	label,
-	value,
 	active,
 	onClick,
 }: {
 	label: string
-	value: string
 	active: boolean
 	onClick: () => void
 }) {
