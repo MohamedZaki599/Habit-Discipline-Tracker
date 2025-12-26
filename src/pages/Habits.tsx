@@ -2,6 +2,7 @@
 
 import { useHabits } from "@/context/HabitContext"
 import HabitCard from "@/components/HabitCard"
+import AddHabitModal from "@/components/AddHabitModal"
 import { useState } from "react"
 
 export default function HabitsPage() {
@@ -22,22 +23,22 @@ export default function HabitsPage() {
 	>("all")
 
 	// -----------------------------------
-	// Search State
+	// Search Text Value
 	// -----------------------------------
 	const [search, setSearch] = useState("")
 
 	// -----------------------------------
-	// Sorting State
+	// Sorting Selection
 	// -----------------------------------
 	const [sortBy, setSortBy] = useState<"newest" | "oldest" | "az">("newest")
 
 	// -----------------------------------
-	// Today Date (used for completed today filter)
+	// Today Date for "completed today" filtering
 	// -----------------------------------
 	const today = new Date().toISOString().split("T")[0]
 
 	// -----------------------------------
-	// Step 1 → Base Filter (Active / Inactive / Today / All)
+	// STEP 1 → Base Filter (All / Active / Inactive / Completed Today)
 	// -----------------------------------
 	let filteredHabits = habits.filter((habit) => {
 		if (filter === "active") return habit.isActive
@@ -55,7 +56,7 @@ export default function HabitsPage() {
 	})
 
 	// -----------------------------------
-	// Step 2 → Search Filter
+	// STEP 2 → Search Filter
 	// -----------------------------------
 	filteredHabits = filteredHabits.filter(
 		(h) =>
@@ -64,14 +65,14 @@ export default function HabitsPage() {
 	)
 
 	// -----------------------------------
-	// Step 3 → Priority Filter
+	// STEP 3 → Priority Filter
 	// -----------------------------------
 	if (priorityFilter !== "all") {
 		filteredHabits = filteredHabits.filter((h) => h.priority === priorityFilter)
 	}
 
 	// -----------------------------------
-	// Step 4 → Sorting Logic
+	// STEP 4 → Sorting Logic
 	// -----------------------------------
 	if (sortBy === "newest") {
 		filteredHabits.sort(
@@ -94,13 +95,19 @@ export default function HabitsPage() {
 	return (
 		<div className="space-y-6">
 			{/* -----------------------------------
-          Page Title + Description
+          Page Header
       ----------------------------------- */}
-			<h2 className="text-2xl font-bold">Habits</h2>
+			<div className="flex items-center justify-between">
+				<div>
+					<h2 className="text-2xl font-bold">Habits</h2>
+					<p className="text-muted-foreground">
+						Manage your habits and track your daily discipline.
+					</p>
+				</div>
 
-			<p className="text-muted-foreground">
-				Manage your habits and track your daily discipline.
-			</p>
+				{/* Add Habit Button */}
+				<AddHabitModal />
+			</div>
 
 			{/* -----------------------------------
           Search Bar
@@ -144,27 +151,24 @@ export default function HabitsPage() {
       ----------------------------------- */}
 			<div className="flex gap-2 flex-wrap">
 				<PriorityButton
-					label="High"
-					active={priorityFilter === "high"}
-					onClick={() => setPriorityFilter("high")}
+					label="All"
+					active={priorityFilter === "all"}
+					onClick={() => setPriorityFilter("all")}
 				/>
-
 				<PriorityButton
 					label="High"
 					active={priorityFilter === "high"}
 					onClick={() => setPriorityFilter("high")}
 				/>
-
 				<PriorityButton
-					label="High"
-					active={priorityFilter === "high"}
-					onClick={() => setPriorityFilter("high")}
+					label="Medium"
+					active={priorityFilter === "medium"}
+					onClick={() => setPriorityFilter("medium")}
 				/>
-
 				<PriorityButton
-					label="High"
-					active={priorityFilter === "high"}
-					onClick={() => setPriorityFilter("high")}
+					label="Low"
+					active={priorityFilter === "low"}
+					onClick={() => setPriorityFilter("low")}
 				/>
 			</div>
 
@@ -200,7 +204,9 @@ export default function HabitsPage() {
 	)
 }
 
-// ========== PRIORITY BUTTON ==========
+/* -----------------------------------
+   Priority Button Component
+----------------------------------- */
 function PriorityButton({
 	label,
 	active,
