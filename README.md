@@ -6,7 +6,7 @@ A modern productivity & discipline system built with React + TypeScript — focu
 
 ## 🚀 Live Demo
 
-🔗 https://YOUR-VERCEL-LINK-HERE
+🔗 https://habit-discipline-tracker.vercel.app
 
 ---
 
