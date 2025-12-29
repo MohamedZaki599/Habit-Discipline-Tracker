@@ -28,39 +28,53 @@ This app helps you:
 
 ### 🏠 Dashboard
 
-- Animated Progress Ring
-- Daily Stats Cards
-- Streak 🔥 System
-- Motivational insights
-- Clean elegant UI
+- Animated Progress Ring (overall active habits progress)
+- Daily Stats Cards:
+  - Completed Today
+  - Active Habits
+  - Inactive Habits
+- Streak 🔥 System (best streak badge)
+- Welcome message with motivational text
+- Clean, elegant UI with responsive design
 
 ### 📋 Habits System
 
 - Add / Remove / Toggle habits
-- Daily completion log
-- Priority system
-- Filters:
+- Daily completion tracking
+- Priority system (Low / Medium / High)
+- Difficulty levels (Easy / Medium / Hard)
+- Custom frequency options
+- Advanced Filters:
   - All
   - Active
   - Inactive
   - Completed Today
-- Search system
-- Sorting (Newest / Oldest / A → Z)
+  - Priority-based filtering
+- Real-time search
+- Sorting options (Newest / Oldest / A → Z)
 
 ### 📊 Analytics
 
-- Weekly progress bar chart
-- Completed vs Missed visualization
-- 30-Day Heatmap like GitHub
-- Insights section
+- Weekly progress bar chart (last 7 days)
+- Completed vs Missed pie chart visualization
+- 30-Day Heatmap (GitHub-style activity visualization)
+- Weekly statistics:
+  - Total completed this week
+  - Best day performance
+  - Consistency score
 
 ### ⚙️ Settings Page
 
-- Light / Dark Theme
-- Export Data (JSON Backup)
-- Import Data
-- Reset System
-- LocalStorage persistence
+- Light / Dark Theme toggle
+- Data Management:
+  - Export Data (JSON Backup)
+  - Import Data (restore from backup)
+  - Reset System (clear all data)
+- Storage Statistics:
+  - Total Habits count
+  - Logs Stored count
+  - Tracked Streaks count
+- LocalStorage persistence (automatic)
 
 ---
 
@@ -68,16 +82,16 @@ This app helps you:
 
 | Category   | Technology                     |
 | ---------- | ------------------------------ |
-| Framework  | React 18 + TypeScript          |
-| Build Tool | Vite                           |
-| Styling    | TailwindCSS + Tailwind Animate |
-| Routing    | React Router DOM v6            |
+| Framework  | React 19 + TypeScript          |
+| Build Tool | Vite 7                         |
+| Styling    | TailwindCSS 4 + tw-animate-css |
+| Routing    | React Router DOM v7            |
 | State      | React Context API              |
 | Charts     | Recharts                       |
 | Animations | Framer Motion                  |
-| UI System  | shadcn/ui                      |
-| Date Utils | date-fns                       |
+| UI System  | shadcn/ui (Radix UI)           |
 | Icons      | Lucide React                   |
+| Utils      | UUID, clsx, tailwind-merge     |
 
 ---
 
@@ -93,14 +107,39 @@ This app helps you:
 
 ## 📂 Project Structure
 
-src
-├── components
-├── context
-├── pages
-├── hooks
-├── types
-├── styles
-└── main.tsx
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn/ui components (Button, Dialog, etc.)
+│   ├── AddHabitModal.tsx
+│   ├── HabitCard.tsx
+│   ├── Heatmap.tsx
+│   ├── InsightCard.tsx
+│   ├── ProgressRing.tsx
+│   ├── StatCard.tsx
+│   └── StreakBadge.tsx
+├── context/            # React Context providers
+│   ├── HabitContext.tsx
+│   ├── ThemeContext.tsx
+│   └── ThemeProvider.tsx
+├── pages/              # Page components
+│   ├── Dashboard.tsx
+│   ├── Habits.tsx
+│   ├── Analytics.tsx
+│   └── Settings.tsx
+├── layouts/            # Layout components
+│   └── AppLayout.tsx
+├── routes/             # Route configuration
+│   └── AppRoutes.tsx
+├── types/              # TypeScript type definitions
+│   └── habit.ts
+├── lib/                # Utility functions
+│   └── utils.ts
+├── hooks/              # Custom React hooks (future)
+├── styles/             # Global styles (future)
+├── index.css           # Global CSS
+└── main.tsx            # Application entry point
+```
 
 ---
 
@@ -108,44 +147,82 @@ src
 
 ### 1️⃣ Clone Repo
 
-git clone https://github.com/MohamedZaki599/Habit-Discipline-Tracker/tree/main
-
+```bash
+git clone https://github.com/MohamedZaki599/Habit-Discipline-Tracker.git
 cd Habit-Discipline-Tracker
+```
 
 ### 2️⃣ Install Dependencies
 
+```bash
 npm install
+```
 
-### 3️⃣ Run Dev
+### 3️⃣ Run Dev Server
 
+```bash
 npm run dev
+```
 
-### 4️⃣ Build
+The app will be available at `http://localhost:5173`
 
+### 4️⃣ Build for Production
+
+```bash
 npm run build
+```
+
+### 5️⃣ Preview Production Build
+
+```bash
+npm run preview
+```
+
+### 6️⃣ Lint Code
+
+```bash
+npm run lint
+```
 
 ## ☁️ Deployment
 
-Fully optimized & production ready — deployed via Vercel.
+Fully optimized & production ready — deployed via **Vercel**.
 
-Just push `main` → Vercel builds automatically.
+### Quick Deploy
+
+1. Push to `main` branch
+2. Vercel automatically builds and deploys
+3. Live at: https://habit-discipline-tracker.vercel.app
+
+### Manual Deployment
+
+The project is configured for Vercel with:
+
+- Automatic builds on push
+- Optimized production builds
+- Fast refresh in development
 
 ---
 
 ## 🧠 Data Storage
 
-No backend (yet)
+**No backend required** — fully client-side application
 
-- Everything stored locally
-- Persistent
-- Exportable
+- **LocalStorage** for all data persistence
+- **Automatic saving** on every change
+- **Export/Import** functionality for backups
+- **Theme preference** stored in localStorage
 
-Stored items:
+### Stored Data Structure:
 
-habits
-logs
-streaks
-theme
+```typescript
+{
+  habits: Habit[]      // All habit definitions
+  logs: DailyLog[]     // Daily completion records
+  streaks: HabitStreak[] // Streak tracking data
+  theme: "light" | "dark" // User theme preference
+}
+```
 
 ---
 
